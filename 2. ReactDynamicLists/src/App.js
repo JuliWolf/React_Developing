@@ -1,185 +1,104 @@
 import React, {Component} from 'react';
-// import React, {useState} from 'react';
 import './App.css';
-
+import styled from 'styled-components';
 import Person from "./Person/Person";
 
-/*----------  Default Component creation -----------------*/
-//
-// class App extends Component {
-//     render(){
-//         return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
-//     }
-// }
-
-/*----------  Functional Component creation -----------------*/
-//
-// function App() {
-//   return (
-//     <div className="App">
-//         <h1>Hi, I'm React App</h1>
-//     </div>
-//   );
-// }
-
-
-/*----------  Component creation with Component -----------------*/
-//
-// class App extends Component {
-//     // special property of any Class
-//     state  = {
-//         persons: [
-//             { name: 'Alira', age: 30 },
-//             { name: 'John', age: 23 },
-//             { name: 'Tany', age: 12 }
-//         ],
-//         otherState: 'some other value'
-//     }
-//
-//     switchNameHandler = (newName) => {
-//         // console.log('Was clicked');
-//
-//         // NOTE: Don't do this
-//         // this.state.persons[0].name = 'George';
-//
-//         this.setState({
-//             persons: [
-//                 { name: newName, age: 30 },
-//                 { name: 'John', age: 23 },
-//                 { name: 'Tany', age: 12 }
-//             ],
-//         })
-//     }
-//
-//     nameChangedHandler = (event) => {
-//         this.setState({
-//             persons: [
-//                 { name: 'Alira', age: 30 },
-//                 { name: event.target.value, age: 23 },
-//                 { name: 'Tany', age: 12 }
-//             ],
-//         })
-//     }
-//
-//     render(){
-//         const style = {
-//             backroundColor: 'white',
-//             font: 'inherit',
-//             border: '1px solid blue',
-//             padding: '8px',
-//             cursor: 'pointer'
-//         };
-//
-//         return (
-//             <div className="App">
-//                 <h1>Hi, I'm React App</h1>
-//                 <button
-//                     style={style}
-//                     onClick={(event) => this.switchNameHandler('Mike')}>
-//                     Switch Name
-//                 </button>
-//                 <Person
-//                     name={this.state.persons[0].name}
-//                     age={this.state.persons[0].age}
-//                     click={this.switchNameHandler.bind(this, 'George')}
-//                 />
-//                 <Person
-//                     name={this.state.persons[1].name}
-//                     age={this.state.persons[1].age}
-//                     changed={this.nameChangedHandler}
-//                 >
-//                     My Hoddies: Racing
-//                 </Person>
-//                 <Person
-//                     name={this.state.persons[2].name}
-//                     age={this.state.persons[2].age}
-//                 />
-//             </div>
-//         )
-//     }
-// }
-
-
-/*--------------  Hooks -----------------*/
-//
-// const App = props => {
-//     const [ personsState, setPersonsState ] = useState({
-//         persons: [
-//             { name: 'Alira', age: 30 },
-//             { name: 'John', age: 23 },
-//             { name: 'Tany', age: 12 }
-//         ]
-//     });
-//
-//     //NOTE: Better to set each state separately
-//     const [otherState, setOtherState] = useState('some other value');
-//
-//     // NOTE: does not merge state, just replace
-//     const switchNameHandler = () => {
-//         setPersonsState({
-//             persons: [
-//                 { name: 'George', age: 30 },
-//                 { name: 'John', age: 23 },
-//                 { name: 'Tany', age: 12 }
-//             ],
-//             //In order to same this props
-//             // otherState: personsState.otherState
-//         })
-//     };
-//
-//     console.log(personsState)
-//     console.log(otherState)
-//
-//     return (
-//         <div className="App">
-//             <h1>Hi, I'm React App</h1>
-//             <button onClick={switchNameHandler}> Switch Name</button>
-//             <Person
-//                 name={personsState.persons[0].name}
-//                 age={personsState.persons[0].age}
-//             />
-//             <Person
-//                 name={personsState.persons[1].name}
-//                 age={personsState.persons[1].age}
-//                 click={switchNameHandler}
-//             >
-//                 My Hoddies: Racing
-//             </Person>
-//             <Person
-//                 name={personsState.persons[2].name}
-//                 age={personsState.persons[2].age}
-//             />
-//         </div>
-//     )
-// }
-
-
-/*--------------  Summarise  -----------------*/
-//
-import UserInput from './UserInput/UserInput';
-import UserOutput from './UserOutput/UserOutput';
+const StyledButton = styled.button`
+    background-color: ${props => props.alt ? 'red': 'green'};
+    color: white;
+    font: inherit;
+    border: 1px solid blue;
+    padding: 8px;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: ${props => props.alt ? 'salmon': 'lightgreen'};
+        color: black;
+    }
+`
 
 class App extends Component {
-    state = {
-        userName: 'Mike'
+    state  = {
+        persons: [
+            { id: 1, name: 'Alira', age: 30 },
+            { id: 2, name: 'John', age: 23 },
+            { id: 3, name: 'Tany', age: 12 }
+        ],
+        otherState: 'some other value',
+        showPersons: false
     }
 
-    userNameChangedHandler = (event) => {
-        this.setState({userName: event.target.value})
+    nameChangedHandler = (event, id) => {
+        const personIndex = this.state.persons.find((p) => p.id === id);
+        const person =  {
+            ...this.state.persons[personIndex]
+        };
+        person.name = event.target.value;
+        const persons = [...this.state.persons];
+        persons[personIndex] = person;
+        this.setState({persons: persons})
     }
-    render() {
+
+    deletePersonHandler = (personIndex) => {
+        // const persons = this.state.persons;
+        //create copy
+        const persons = [...this.state.persons]
+        persons.splice(personIndex, 1);
+        this.setState({persons: persons});
+    }
+
+    togglePersonsHandler = (event) => {
+        const doesShow = this.state.showPersons;
+        this.setState({showPersons: !doesShow})
+    }
+
+    render(){
+
+        let persons = null;
+
+        if(this.state.showPersons){
+            persons = (
+                <div>
+                    { this.state.persons.map( (person, index) => {
+                        return (<Person
+                            name={person.name}
+                            age={person.age}
+                            click={() => this.deletePersonHandler(index)}
+                            key={person.id}
+                            changed={(event) => this.nameChangedHandler(event, person.id)}
+                        />)
+                    })
+                    }
+                </div>
+            );
+        }
+
+        let classes = [];
+
+        if(this.state.persons.length <= 2){
+            classes.push('red');
+        }
+
+        if(this.state.persons.length <=1 ){
+            classes.push('bold');
+        }
+
         return (
-            <div className='App'>
-                <UserInput changed={this.userNameChangedHandler} currentName={this.state.userName}/>
-                <UserOutput userName={this.state.userName}/>
-                <UserOutput userName={this.state.userName}/>
-                <UserOutput userName="Max"/>
+            <div className="App">
+                <h1>Hi, I'm React App</h1>
+                <p className={classes.join(' ')}>This is really working!</p>
+                <StyledButton
+                    alt={this.state.showPersons}
+                    onClick={this.togglePersonsHandler}>
+                    Switch Name
+                </StyledButton>
+                {persons}
             </div>
         )
     }
 }
 
+
+
 export default App;
-
-
 
