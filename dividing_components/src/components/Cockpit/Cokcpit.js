@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import './Cockpit.css';
 
@@ -16,7 +16,14 @@ const StyledButton = styled.button`
     }
 `
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect')
+        //Http request ...
+        setTimeout(() => {
+            alert('Save data to the cloud')
+        }, 1000)
+    }, [])
     let classes = [];
 
     if(props.persons.length <= 2){
@@ -39,4 +46,4 @@ const cockpit = (props) => {
     );
 }
 
-export default cockpit;
+export default Cockpit;
