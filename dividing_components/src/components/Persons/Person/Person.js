@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import styled from 'styled-components';
 import Aux from '../../../hoc/Aux'
+import withClass from '../../../hoc/withClass'
+import PropTypes from 'prop-types';
 
 const StyledDiv = styled.div`
             width: 60%;
@@ -47,7 +49,8 @@ class Person extends Component {
             </Aux>
         )
     }
-
 }
 
-export default Person;
+
+
+export default withClass(Person, 'Person');
