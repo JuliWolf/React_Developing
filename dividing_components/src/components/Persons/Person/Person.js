@@ -18,6 +18,11 @@ const StyledDiv = styled.div`
         `
 
 class Person extends Component {
+
+    constructor(props){
+        super(props)
+        this.inputElementRef = React.createRef();
+    }
     // static getDerivedStateFromProps(props, state){
     //     console.log('[Person.js] getDerivedStateFromProps');
     //     return state;
@@ -35,22 +40,40 @@ class Person extends Component {
     // componentDidUpdate(prevProps, prevState, snapshot) {
     //     console.log('[Person.js] componentDidUpdate');
     // }
+
+    componentDidMount() {
+        // this.inputElement.focus();
+        this.inputElementRef.current.focus();
+    }
+
     render(){
         console.log('[Person.js] rendering...');
         return (
             // Component to wrap elements. It does not create wrapping element like div
             <Aux>
+                {this.props.isAuth ? <p>Authenticated</p> : <p>Please Log in</p>}
                 <h2 key='i2'>Another Element</h2>
                 <StyledDiv key='i1'>
                     <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
                     <p>{ this.props.children }</p>
-                    <input type="text" onChange={this.props.changed} value={this.props.name}/>
+                    <input
+                        type="text"
+                        // ref={(inputEl) => {this.inputElement = inputEl}}
+                        ref={this.inputElementRef}
+                        onChange={this.props.changed}
+                        value={this.props.name}/>
                 </StyledDiv>
             </Aux>
         )
     }
 }
 
+Person.propTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    changed: PropTypes.func
+};
 
 
 export default withClass(Person, 'Person');
