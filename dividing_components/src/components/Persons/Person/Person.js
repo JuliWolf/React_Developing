@@ -34,13 +34,14 @@ class Person extends Component {
     // }
     render(){
         console.log('[Person.js] rendering...');
-        return (
-            <StyledDiv>
+        return [
+            <h2 key='i2'>Another Element</h2>,
+            <StyledDiv key='i1'>
                 <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
                 <p>{ this.props.children }</p>
                 <input type="text" onChange={this.props.changed} value={this.props.name}/>
             </StyledDiv>
-        )
+        ]
     }
 
 }
