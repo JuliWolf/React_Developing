@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Aux from '../../../hoc/Aux'
 import withClass from '../../../hoc/withClass'
 import PropTypes from 'prop-types';
+import AuthContext from '../../../context/auth-context'
 
 const StyledDiv = styled.div`
             width: 60%;
@@ -51,7 +52,10 @@ class Person extends Component {
         return (
             // Component to wrap elements. It does not create wrapping element like div
             <Aux>
-                {this.props.isAuth ? <p>Authenticated</p> : <p>Please Log in</p>}
+                <AuthContext.Consumer>
+                    {(context) =>
+                        context.authenticated ? <p>Authenticated</p> : <p>Please Log in</p>}
+                </AuthContext.Consumer>
                 <h2 key='i2'>Another Element</h2>
                 <StyledDiv key='i1'>
                     <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
