@@ -42,9 +42,13 @@ class Person extends Component {
     //     console.log('[Person.js] componentDidUpdate');
     // }
 
+    // Alternative way to use context
+    static contextType = AuthContext;
+
     componentDidMount() {
         // this.inputElement.focus();
         this.inputElementRef.current.focus();
+        console.log(this.context.authenticated);
     }
 
     render(){
@@ -52,10 +56,11 @@ class Person extends Component {
         return (
             // Component to wrap elements. It does not create wrapping element like div
             <Aux>
-                <AuthContext.Consumer>
-                    {(context) =>
-                        context.authenticated ? <p>Authenticated</p> : <p>Please Log in</p>}
-                </AuthContext.Consumer>
+                {/*<AuthContext.Consumer>*/}
+                {/*    {(context) =>*/}
+                {/*        context.authenticated ? <p>Authenticated</p> : <p>Please Log in</p>}*/}
+                {/*</AuthContext.Consumer>*/}
+                { this.context.authenticated ? <p>Authenticated</p> : <p>Please Log in</p>}
                 <h2 key='i2'>Another Element</h2>
                 <StyledDiv key='i1'>
                     <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
