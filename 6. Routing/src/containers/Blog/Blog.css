@@ -17,6 +17,7 @@
 }
 
 .Block a:hover,
-.Block a:active{
+.Block a:active,
+.Block a.active{
     color: #fa923f;
 }
