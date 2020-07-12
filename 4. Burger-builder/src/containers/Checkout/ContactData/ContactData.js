@@ -93,7 +93,8 @@ class ContactData extends Component {
                     ]
                 },
                 value: '',
-                validation: {}
+                validation: {},
+                valid: true
             }
         },
         formIsValid: false,
