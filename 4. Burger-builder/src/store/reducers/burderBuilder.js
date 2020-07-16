@@ -26,7 +26,7 @@ const addIngredient = (state, action) => {
 
 const removeIngredient = (state, action) => {
     const updatedIngr = {[action.ingredientName]: state.ingredients[action.ingredientName] - 1};
-    const updatedIngrs = updateObject(state.ingredients, updatedIngr)
+    const updatedIngrs = updateObject(state.ingredients, updatedIngr);
     const updatedSt = {
         ingredients: updatedIngrs,
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
@@ -34,22 +34,21 @@ const removeIngredient = (state, action) => {
     return updateObject(state, updatedSt);
 }
 
+const setIngredients = (state, action) => {
+    return updateObject(state, {
+        ingredients: action.ingredients,
+        totalPrice: 4,
+        error: false
+    });
+}
+
 const burderBuilder = (state = initialState, action) => {
     switch (action.type){
-        case actionTypes.ADD_INGREDIENT:
-            return addIngredient(state, action);
-        case actionTypes.REMOVE_INGREDIENT:
-            return removeIngredient(state, action);
-        case actionTypes.SET_INGREDIENTS:
-            return updateObject(state, {
-                ingredients: action.ingredients,
-                totalPrice: 4,
-                error: false
-            });
-        case actionTypes.FETCH_INGREDIENTS_FAILED:
-            return updateObject(state, {error: true});
-        default:
-            return state;
+        case actionTypes.ADD_INGREDIENT: return addIngredient(state, action);
+        case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action);
+        case actionTypes.SET_INGREDIENTS: return setIngredients(state, action);
+        case actionTypes.FETCH_INGREDIENTS_FAILED: return updateObject(state, {error: true});
+        default: return state;
     }
 }
 
