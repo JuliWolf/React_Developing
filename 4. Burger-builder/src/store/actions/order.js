@@ -77,5 +77,4 @@ export const fetchOrders = () => {
                 dispatch(fetchOrdersFail(error))
             })
     }
-
 }
