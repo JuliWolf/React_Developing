@@ -9,13 +9,15 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import burderBuilderReducer from './store/reducers/burderBuilder';
 import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 
 import './index.css';
 
 
 const rootReducer = combineReducers({
     burgerBuilder: burderBuilderReducer,
-    order: orderReducer
+    order: orderReducer,
+    auth: authReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
