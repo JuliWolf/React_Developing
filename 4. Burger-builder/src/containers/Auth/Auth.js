@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import * as actions from '../../store/actions/index';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 import classes from './Auth.css'
 
@@ -19,7 +20,7 @@ class Auth extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    isEmail: 5
+                    isEmail: true
                 },
                 valid: false,
                 touched: false
@@ -107,7 +108,7 @@ class Auth extends Component {
             })
         }
 
-        const form = formElementsArray.map(formElement => (
+        let form = formElementsArray.map(formElement => (
             <Input
                 key={formElement.id}
                 invalid={!formElement.config.valid}
@@ -119,8 +120,21 @@ class Auth extends Component {
                 change={(event) => this.inputChangedHandler(event, formElement.id)}
             />
         ));
+
+        if(this.props.loading){
+            form = <Spinner/>
+        }
+
+        let errorMessage = null;
+
+        if(this.props.error){
+            errorMessage = (
+                <p>{this.props.error.message}</p>
+            )
+        }
         return (
             <div className={classes.Auth}>
+                {errorMessage}
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">
@@ -137,11 +151,17 @@ class Auth extends Component {
     }
 }
 
-
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
     return {
-        onAuth: (email, password) => dispatch(actions.auth(email, password))
+        loading: state.auth.loading,
+        error: state.auth.error
     }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
