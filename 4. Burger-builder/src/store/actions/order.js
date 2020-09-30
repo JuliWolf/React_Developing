@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes';
-import Axios from "../../axios-orders";
 
 export const purchaseBurgerSuccess = (id, orderData) => {
     return {
@@ -58,7 +57,7 @@ export const fetchOrdersStart = () => {
 
 export const fetchOrders = (token, userId) => {
     return {
-        type: actionTypes.FETCH_ORDER,
+        type: actionTypes.FETCH_ORDERS,
         token: token,
         userId: userId
     }
