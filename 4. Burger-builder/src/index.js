@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker';
 import burderBuilderReducer from './store/reducers/burderBuilder';
 import orderReducer from './store/reducers/order';
 import authReducer from './store/reducers/auth';
-import { logout } from './store/sagas/auth';
+import { watchAuth } from './store/sagas/index';
 
 import './index.css';
 
@@ -33,7 +33,7 @@ const store = createStore(rootReducer,
     )
 );
 
-sagaMiddleware.run(logout);
+sagaMiddleware.run(watchAuth);
 
 const app = (
     <Provider store={store}>
