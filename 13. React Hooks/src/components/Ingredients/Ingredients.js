@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
 import Search from './Search';
 
 function Ingredients() {
-    const [userIngredients, setUserIngredients] = useState([])
+    const [userIngredients, setUserIngredients] = useState([]);
+
+    useEffect(() => {
+        console.log('RENDERING INGREDIENTS');
+    }, [userIngredients]);
+
+    // to cash function in order not to recreate
+    const filteredIngredientsHandler = useCallback(filteredIngredients => {
+        setUserIngredients(filteredIngredients);
+    }, []);
 
     const addIngredientHandler = ingredient => {
         fetch('https://react-hooks-91135.firebaseio.com/ingredients.json', {
@@ -25,11 +34,9 @@ function Ingredients() {
     return (
         <div className="App">
             <IngredientForm onAddIngredient={addIngredientHandler}/>
-
             <section>
-            <Search />
-              <IngredientList ingredients={userIngredients} onRemoveItem={() => {}}/>
-            {/* Need to add list here! */}
+                <Search onLoadIngredients={filteredIngredientsHandler}/>
+                <IngredientList ingredients={userIngredients} onRemoveItem={() => {}}/>
             </section>
         </div>
     );
