@@ -1,42 +1,36 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
 import {connect} from 'react-redux'
 import Aux from '../Aux/Aux'
 import classes from './Layout.css'
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
 import SideDraw from "../../components/Navigation/SideDraw/SideDraw";
 
-class Layout  extends Component{
-    state = {
-        showSideDraw: true
+const Layout = props => {
+    const [sideDrawIsVisible, setSideDrawIsVisible] = useState(false);
+
+    const sideDrawClosedHandler = () => {
+        setSideDrawIsVisible(false);
     }
 
-    sideDrawClosedHandler = () => {
-        this.setState({showSideDraw: false});
+    const sideDrawToggleHandler = () => {
+        setSideDrawIsVisible(!sideDrawIsVisible);
     }
 
-    sideDrawToggleHandler = () => {
-        this.setState((prevState) => {
-            return {showSideDraw: !prevState.showSideDraw}
-        });
-    }
-
-    render(){
-        return (
-            <Aux>
-                <Toolbar
-                    isAuth={this.props.isAuthenticated}
-                    drawToggleClicked={this.sideDrawToggleHandler}/>
-                <SideDraw
-                    isAuth={this.props.isAuthenticated}
-                    closed={this.sideDrawClosedHandler}
-                    open={this.state.showSideDraw}
-                />
-                <main className={classes.Content}>
-                    {this.props.children}
-                </main>
-            </Aux>
-        )
-    }
+    return (
+        <Aux>
+            <Toolbar
+                isAuth={props.isAuthenticated}
+                drawToggleClicked={sideDrawToggleHandler}/>
+            <SideDraw
+                isAuth={props.isAuthenticated}
+                closed={sideDrawClosedHandler}
+                open={sideDrawIsVisible}
+            />
+            <main className={classes.Content}>
+                {props.children}
+            </main>
+        </Aux>
+    )
 }
 
 const mapStateToProps = state => {
