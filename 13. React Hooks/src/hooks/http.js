@@ -1,3 +1,5 @@
+// The idea of custom hooks is to share logic across components
+
 import {useCallback, useReducer} from "react";
 
 const initialState = {
